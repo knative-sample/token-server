@@ -1,0 +1,25 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: token-server
+  namespace: default
+spec:
+  template:
+    metadata:
+      labels:
+        app: token-server
+      annotations:
+        # sidecar.istio.io/inject: "true"
+        autoscaling.knative.dev/maxScale: "20"
+        autoscaling.knative.dev/target: "3"
+    spec:
+      containers:
+        - image: registry.cn-hangzhou.aliyuncs.com/knative-sample/token-server:20190615121805
+          ports:
+            - name: http1
+              containerPort: 8080
+          env:
+            - name: MESSAGE
+              value: "token-server-msg"
+            - name: RATE
+              value: "6"
