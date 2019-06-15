@@ -3,7 +3,7 @@
 # Create Date: 2019-02-13 10:15
 #********************************* ******************************#
 
-SVC_NAME="httpload-server"
+SVC_NAME="token-server"
 
 export INGRESSGATEWAY=istio-ingressgateway
 export IP_ADDRESS=$(kubectl get svc $INGRESSGATEWAY --namespace istio-system --output jsonpath="{.status.loadBalancer.ingress[*]['ip']}")
