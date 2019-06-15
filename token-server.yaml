@@ -9,7 +9,6 @@ spec:
       labels:
         app: token-server
       annotations:
-        # sidecar.istio.io/inject: "true"
         autoscaling.knative.dev/maxScale: "20"
         autoscaling.knative.dev/target: "3"
     spec:
