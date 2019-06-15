@@ -19,7 +19,6 @@ spec:
       labels:
         app: token-server
       annotations:
-        # sidecar.istio.io/inject: "true"
         autoscaling.knative.dev/maxScale: "20"
         autoscaling.knative.dev/target: "3"
     spec:
@@ -33,7 +32,6 @@ spec:
               value: "token-server-msg"
             - name: RATE
               value: "6"
-
 ```
 
 参数说明
@@ -48,3 +46,10 @@ spec:
 ## 编译镜像
 
 `./build-image.sh`
+
+## HTTP 请求 
+
+其中 sleep=400 表示服务端接收到请求以后 sleep 多长时间，这个用户模拟真实的 RT 
+```
+curl http://token-server.default.example.com?sleep=400 
+```
