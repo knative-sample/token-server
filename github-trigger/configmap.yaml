@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: token-server-trigger-config
+  namespace: default
+data:
+  "deployer-trigger.yaml": |-
+    apiVersion: build.knative.dev/v1alpha1
+    kind: Build
+    metadata:
+      name: build-token-server
+    spec:
+      serviceAccountName: build-bot
+      source:
+        git:
+          url: https://github.com/knative-sample/token-server.git
+          revision: master
+      steps:
+      - name: build-and-push
+        image: "registry.cn-hangzhou.aliyuncs.com/knative-release/kaniko-project-executor:v0.6.0"
+        args:
+        - "--dockerfile=/workspace/Dockerfile"
+        # Replace meteatamel with your actual DockerHub
+        - "--destination=registry.cn-hangzhou.aliyuncs.com/knative-sample/token-server:{{.ShortCommitid}}"
+        env:
+        - name: DOCKER_CONFIG
+          value: /builder/home/.docker
+      # - name: release-service
+      #   image: "registry.cn-hangzhou.aliyuncs.com/knative-sample/deployer-deployer:7620096e"
+      #   args:
+      #   - "--namespace=default"
+      #   - "--serivce-name=token-server"
+      #   - "--image=registry.cn-hangzhou.aliyuncs.com/knative-sample/token-server:{{.ShortCommitid}}"
